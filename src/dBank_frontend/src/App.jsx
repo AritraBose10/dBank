@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Actor, HttpAgent } from '@dfinity/agent';
+import { canisterId as dbank_id, idlFactory as dbank_idl} from "../../declarations/dBank_backend"                                                       
+const agent = new HttpAgent({ host: 'http://127.0.0.1:3000' });
+agent.fetchRootKey();
+const dBank = Actor.createActor(dbank_idl, { agent, canisterId: dbank_id })
 
 
 function DBankComponent() {
@@ -9,7 +14,7 @@ function DBankComponent() {
 
   useEffect(() => {
     updateBalance();
-  }, []); // Empty dependency array to run only once on component mount
+  }, [currentBalance]); // Empty dependency array to run only once on component mount
 
   const handleSubmit = async (event) => {
     event.preventDefault();
